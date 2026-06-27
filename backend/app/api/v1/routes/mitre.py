@@ -7,9 +7,30 @@ from fastapi import APIRouter, Depends
 from app.api.deps import require_permissions
 from app.core.errors import NotFoundError
 from app.domain.enums import Permission
+from app.domain.enums import MitreTactic
 from app.infrastructure.mitre.knowledge_base import MITRE_TECHNIQUES, get_technique
 
 router = APIRouter(prefix="/mitre", tags=["mitre"])
+
+
+@router.get(
+    "/matrix",
+    summary="ATT&CK matrix grouped by tactic",
+    dependencies=[Depends(require_permissions(Permission.ALERTS_READ))],
+)
+async def matrix() -> dict[str, object]:
+    columns: dict[str, list[dict[str, str]]] = {t.value: [] for t in MitreTactic}
+    for rec in MITRE_TECHNIQUES.values():
+        columns[rec.tactic.value].append(
+            {"technique_id": rec.technique_id, "name": rec.name}
+        )
+    return {
+        "tactics": [
+            {"tactic": tactic, "techniques": techs}
+            for tactic, techs in columns.items()
+            if techs
+        ]
+    }
 
 
 @router.get(

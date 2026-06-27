@@ -13,6 +13,7 @@ from app.api.v1.routes import (
     events,
     health,
     hunts,
+    incidents,
     ingest,
     mitre,
 )
@@ -28,3 +29,4 @@ api_router.include_router(mitre.router)
 api_router.include_router(hunts.router)
 api_router.include_router(detections.router)
 api_router.include_router(chat.router)
+api_router.include_router(incidents.router)
