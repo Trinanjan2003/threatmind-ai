@@ -8,8 +8,10 @@ from app.api.v1.routes import (
     alerts,
     auth,
     dashboard,
+    detections,
     events,
     health,
+    hunts,
     ingest,
     mitre,
 )
@@ -22,3 +24,5 @@ api_router.include_router(dashboard.router)
 api_router.include_router(ingest.router)
 api_router.include_router(events.router)
 api_router.include_router(mitre.router)
+api_router.include_router(hunts.router)
+api_router.include_router(detections.router)
