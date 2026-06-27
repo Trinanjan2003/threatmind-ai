@@ -12,8 +12,8 @@ This platform is built in **vertical slices**: each phase delivers something tha
 
 | Phase | Title | Outcome | Status |
 |------:|-------|---------|--------|
-| **0** | Foundation | Repo, architecture docs, Docker Compose, FastAPI clean-architecture skeleton, auth + RBAC | 🟡 In progress |
-| **1** | Frontend shell & design system | Next.js + Tailwind + shadcn + Framer Motion. Dark/light, dashboard layout, navigation, design tokens. Mocked data. | ⬜ Planned |
+| **0** | Foundation | Repo, architecture docs, Docker Compose, FastAPI clean-architecture skeleton, auth + RBAC | ✅ Done |
+| **1** | Frontend shell & design system | Next.js + Tailwind + shadcn + Framer Motion. Dark/light, dashboard layout, navigation, design tokens. Mocked data. | ✅ Done |
 | **2** | Ingestion & detection vertical | Ingest Sysmon + CloudTrail → normalize → rule-based detections → alerts persisted → live dashboard view with real charts | ⬜ Planned |
 | **3** | AI multi-agent engine | LangGraph orchestration of the 8 agents, shared memory (Redis), Ollama provider, autonomous hunt runs | ⬜ Planned |
 | **4** | AI chat investigation | Natural-language investigation workspace with streaming answers + cited evidence | ⬜ Planned |

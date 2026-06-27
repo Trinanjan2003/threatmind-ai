@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* ── Light theme ── */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 199 89% 48%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 199 89% 95%;
+    --accent-foreground: 199 89% 30%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 199 89% 48%;
+    --radius: 0.65rem;
+
+    --sev-critical: 0 84% 60%;
+    --sev-high: 25 95% 53%;
+    --sev-medium: 38 92% 50%;
+    --sev-low: 199 89% 48%;
+    --sev-info: 215 16% 57%;
+  }
+
+  .dark {
+    /* ── Dark theme (default SOC look) ── */
+    --background: 222 47% 6%;
+    --foreground: 210 40% 96%;
+    --card: 222 44% 9%;
+    --card-foreground: 210 40% 96%;
+    --popover: 222 47% 8%;
+    --popover-foreground: 210 40% 96%;
+    --primary: 199 89% 52%;
+    --primary-foreground: 222 47% 6%;
+    --secondary: 217 33% 16%;
+    --secondary-foreground: 210 40% 96%;
+    --muted: 217 33% 14%;
+    --muted-foreground: 215 20% 60%;
+    --accent: 217 33% 17%;
+    --accent-foreground: 210 40% 96%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217 33% 18%;
+    --input: 217 33% 18%;
+    --ring: 199 89% 52%;
+
+    --sev-critical: 0 84% 62%;
+    --sev-high: 25 95% 58%;
+    --sev-medium: 38 92% 55%;
+    --sev-low: 199 89% 55%;
+    --sev-info: 215 20% 65%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-muted-foreground/30;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/50;
+  }
+}
+
+@layer components {
+  /* Glassmorphism surface used for cards, the top bar, and overlays. */
+  .glass {
+    @apply border border-white/10 bg-card/60 backdrop-blur-xl backdrop-saturate-150;
+  }
+  .glass-strong {
+    @apply border border-white/10 bg-card/80 backdrop-blur-2xl;
+  }
+  /* Subtle gradient ring used to highlight critical surfaces. */
+  .glow-ring {
+    box-shadow:
+      0 0 0 1px hsl(var(--border)),
+      0 8px 30px -10px hsl(var(--primary) / 0.35);
+  }
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary to-sky-400 bg-clip-text text-transparent;
+  }
+}
