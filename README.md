@@ -115,7 +115,20 @@ Detailed setup, including running backend/frontend natively for development, liv
 
 ## Project Status
 
-🚧 **Under active development**, built in vertical slices. See [`docs/00-roadmap.md`](docs/00-roadmap.md) for the phase plan and current progress.
+All six delivery phases are in place (foundation → frontend → ingestion/detection
+→ multi-agent engine → AI chat → detection-engineering/MITRE/timeline →
+hardening/infra). See [`docs/00-roadmap.md`](docs/00-roadmap.md) for the phase
+plan and [`docs/12-deliverables-map.md`](docs/12-deliverables-map.md) for a map of
+every deliverable to its location in the repo.
+
+Built in vertical slices: it is a coherent, runnable, architecturally-correct
+platform that spans every requested area. Two data-source parsers are fully
+implemented (Sysmon, CloudTrail); the remaining declared sources follow the same
+`LogParser` interface. AI features run on local Ollama and degrade gracefully to
+deterministic heuristics when it is unavailable.
+
+> **Requires Python 3.11+** for the backend (uses `StrEnum`, `datetime.UTC`).
+> Use Docker (recommended) or install 3.11+ natively.
 
 ## License
 
