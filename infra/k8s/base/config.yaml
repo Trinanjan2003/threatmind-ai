@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: threatmind-config
+  namespace: threatmind
+data:
+  ENVIRONMENT: "production"
+  DEBUG: "false"
+  LOG_JSON: "true"
+  API_V1_PREFIX: "/api/v1"
+  POSTGRES_HOST: "postgres"
+  POSTGRES_PORT: "5432"
+  POSTGRES_DB: "threatmind"
+  REDIS_HOST: "redis"
+  REDIS_PORT: "6379"
+  ELASTICSEARCH_URL: "http://elasticsearch:9200"
+  OLLAMA_BASE_URL: "http://ollama:11434"
+  OLLAMA_MODEL: "llama3.1"
+  PROMETHEUS_ENABLED: "true"
+  OTEL_ENABLED: "true"
+---
+# NOTE: This is a TEMPLATE. Never commit real secrets. In production, create the
+# Secret via a sealed-secret / external secret store, not from this file.
+apiVersion: v1
+kind: Secret
+metadata:
+  name: threatmind-secrets
+  namespace: threatmind
+type: Opaque
+stringData:
+  SECRET_KEY: "REPLACE_WITH_64_CHAR_RANDOM"
+  ENCRYPTION_KEY: "REPLACE_WITH_FERNET_KEY"
+  POSTGRES_USER: "threatmind"
+  POSTGRES_PASSWORD: "REPLACE_ME"
