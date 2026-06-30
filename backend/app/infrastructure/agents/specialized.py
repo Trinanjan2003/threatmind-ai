@@ -109,7 +109,7 @@ class MalwareAnalysisAgent(BaseAgent):
     async def _execute(self, state: HuntState) -> HuntState:
         for ev in state.events:
             img = str(ev.get("process", {}).get("name", "")).lower()
-            if "\\temp\\" in img or "/tmp/" in img:
+            if "\\temp\\" in img or "/tmp/" in img:  # nosec B108 - detection signature, not file I/O
                 state.add_finding(
                     Finding(
                         agent=self.name,

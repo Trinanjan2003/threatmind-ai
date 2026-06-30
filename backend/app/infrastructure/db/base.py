@@ -8,6 +8,8 @@ from datetime import datetime
 from sqlalchemy import DateTime, func
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
+from app.infrastructure.db.types import GUID
+
 
 class Base(DeclarativeBase):
     """Declarative base for all ORM models."""
@@ -15,7 +17,7 @@ class Base(DeclarativeBase):
 
 class UUIDMixin:
     id: Mapped[uuid.UUID] = mapped_column(
-        primary_key=True, default=uuid.uuid4
+        GUID(), primary_key=True, default=uuid.uuid4
     )
 
 

@@ -106,7 +106,7 @@ DEFAULT_RULES: list[DetectionRule] = [
         technique_ids=["T1543.003"],
         explanation="Services launching from %TEMP% are a common persistence mechanism.",
         predicate=lambda e: e.action in ("process_create", "sysmon_1")
-        and ("\\temp\\" in _image(e) or "/tmp/" in _image(e))
+        and ("\\temp\\" in _image(e) or "/tmp/" in _image(e))  # nosec B108 - detection signature, not file I/O
         and "service" in _cmdline(e),
     ),
     DetectionRule(

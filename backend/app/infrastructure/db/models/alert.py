@@ -7,10 +7,10 @@ from datetime import datetime
 from typing import Any
 
 from sqlalchemy import ForeignKey, Index, Integer, String, Text
-from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.infrastructure.db.base import Base, TimestampMixin, UUIDMixin
+from app.infrastructure.db.types import GUID, JSONType
 
 
 class AlertModel(UUIDMixin, TimestampMixin, Base):
@@ -31,10 +31,10 @@ class AlertModel(UUIDMixin, TimestampMixin, Base):
     host: Mapped[str | None] = mapped_column(String(255))
     user_principal: Mapped[str | None] = mapped_column(String(255))
     explanation: Mapped[str | None] = mapped_column(Text)
-    evidence: Mapped[list[dict[str, Any]]] = mapped_column(JSONB, default=list)
-    techniques: Mapped[list[dict[str, Any]]] = mapped_column(JSONB, default=list)
+    evidence: Mapped[list[dict[str, Any]]] = mapped_column(JSONType, default=list)
+    techniques: Mapped[list[dict[str, Any]]] = mapped_column(JSONType, default=list)
     assigned_to: Mapped[uuid.UUID | None] = mapped_column(
-        ForeignKey("users.id", ondelete="SET NULL"), nullable=True
+        GUID(), ForeignKey("users.id", ondelete="SET NULL"), nullable=True
     )
     first_seen: Mapped[datetime | None] = mapped_column()
     last_seen: Mapped[datetime | None] = mapped_column()
