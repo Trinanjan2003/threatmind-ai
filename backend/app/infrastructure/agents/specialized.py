@@ -135,7 +135,9 @@ class MitreMappingAgent(BaseAgent):
                 validated.add(tid)
         state.technique_ids = validated
         if validated:
-            tactics = {get_technique(t).tactic.value for t in validated if get_technique(t)}
+            tactics = {
+                rec.tactic.value for t in validated if (rec := get_technique(t)) is not None
+            }
             state.add_finding(
                 Finding(
                     agent=self.name,
@@ -246,7 +248,7 @@ def _render_report(state: HuntState) -> str:
 
 
 # Ordered roster used by the orchestrator.
-AGENT_CLASSES = [
+AGENT_CLASSES: list[type[BaseAgent]] = [
     IOCCorrelationAgent,
     ThreatIntelligenceAgent,
     LogInvestigationAgent,

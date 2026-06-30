@@ -48,6 +48,14 @@ def _image(e: NormalizedEvent) -> str:
     return (e.process.name or "").lower() if e.process else ""
 
 
+def _filename(e: NormalizedEvent) -> str:
+    return (e.file.name or "").lower() if e.file else ""
+
+
+def _cloud_event(e: NormalizedEvent) -> str:
+    return (e.cloud.event_name or "") if e.cloud else ""
+
+
 _OFFICE_PARENTS = ("winword.exe", "excel.exe", "powerpnt.exe", "outlook.exe")
 _LOLBINS = ("powershell.exe", "cmd.exe", "wscript.exe", "cscript.exe", "mshta.exe", "rundll32.exe", "regsvr32.exe")
 
@@ -122,8 +130,9 @@ DEFAULT_RULES: list[DetectionRule] = [
         base_confidence=85,
         technique_ids=["T1486"],
         explanation="Rapid mass file renames/encryption with ransomware extensions indicate impact-stage ransomware.",
-        predicate=lambda e: bool(e.file and e.file.name)
-        and any(ext in (e.file.name or "").lower() for ext in (".lockbit", ".encrypted", ".crypt", ".locked")),
+        predicate=lambda e: any(
+            ext in _filename(e) for ext in (".lockbit", ".encrypted", ".crypt", ".locked")
+        ),
     ),
     DetectionRule(
         rule_id="TM-0007",
@@ -134,8 +143,7 @@ DEFAULT_RULES: list[DetectionRule] = [
         base_confidence=84,
         technique_ids=["T1098"],
         explanation="Attaching administrative IAM policies can escalate a low-privilege identity to full control.",
-        predicate=lambda e: bool(e.cloud)
-        and (e.cloud.event_name or "") in ("AttachUserPolicy", "AttachRolePolicy", "PutUserPolicy"),
+        predicate=lambda e: _cloud_event(e) in ("AttachUserPolicy", "AttachRolePolicy", "PutUserPolicy"),
     ),
     DetectionRule(
         rule_id="TM-0008",
@@ -147,8 +155,6 @@ DEFAULT_RULES: list[DetectionRule] = [
         technique_ids=["T1110"],
         explanation="A burst of failed logins suggests credential brute forcing or password spraying.",
         predicate=lambda e: "api_error" in e.tags
-        and (e.cloud.event_name or "").lower().startswith("consolelogin")
-        if e.cloud
-        else False,
+        and _cloud_event(e).lower().startswith("consolelogin"),
     ),
 ]

@@ -9,7 +9,9 @@ from __future__ import annotations
 
 import logging
 import sys
+from collections.abc import MutableMapping
 from contextvars import ContextVar
+from typing import Any
 
 import structlog
 
@@ -17,7 +19,7 @@ import structlog
 request_id_ctx: ContextVar[str | None] = ContextVar("request_id", default=None)
 
 
-def _add_request_id(_: object, __: str, event_dict: dict[str, object]) -> dict[str, object]:
+def _add_request_id(_: object, __: str, event_dict: MutableMapping[str, Any]) -> MutableMapping[str, Any]:
     rid = request_id_ctx.get()
     if rid is not None:
         event_dict["request_id"] = rid

@@ -47,7 +47,7 @@ class TokenService:
         """Validate + revoke the old refresh token, then issue a fresh pair."""
         old_hash = security.hash_opaque_token(refresh_token)
         await self._refresh_tokens.revoke(old_hash)
-        return await self.issue_pair(user, **ctx)  # type: ignore[arg-type]
+        return await self.issue_pair(user, **ctx)
 
     async def revoke(self, refresh_token: str) -> None:
         await self._refresh_tokens.revoke(security.hash_opaque_token(refresh_token))

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import AsyncIterator
+from typing import Any
 
 import redis.asyncio as aioredis
 
@@ -14,13 +15,16 @@ logger = get_logger(__name__)
 
 
 class RedisCache(CachePort):
-    def __init__(self, client: aioredis.Redis | None = None) -> None:
-        self._client = client or aioredis.from_url(
+    # redis-py's async type stubs are incomplete (decode_responses, aclose);
+    # we keep the client loosely typed and rely on runtime behavior + tests.
+    def __init__(self, client: Any = None) -> None:
+        self._client: Any = client or aioredis.from_url(
             settings.redis_dsn, encoding="utf-8", decode_responses=True
         )
 
     async def get(self, key: str) -> str | None:
-        return await self._client.get(key)
+        result = await self._client.get(key)
+        return result if result is None else str(result)
 
     async def set(self, key: str, value: str, *, ttl_seconds: int | None = None) -> None:
         await self._client.set(key, value, ex=ttl_seconds)

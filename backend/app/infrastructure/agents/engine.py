@@ -17,7 +17,7 @@ from app.infrastructure.agents.state import HuntState
 logger = get_logger(__name__)
 
 try:  # LangGraph is optional; the engine works without it.
-    from langgraph.graph import END, StateGraph  # type: ignore
+    from langgraph.graph import END, StateGraph
 
     _LANGGRAPH_AVAILABLE = True
 except Exception:  # noqa: BLE001 - absence is a supported configuration
@@ -61,12 +61,16 @@ class HuntEngine:
 
     async def _run_langgraph(self, state: HuntState) -> HuntState:
         """Graph-based execution using LangGraph when present."""
+        from typing import Any
+
+        from app.infrastructure.agents.base import BaseAgent
+
         try:
-            graph = StateGraph(dict)
+            graph: Any = StateGraph(dict)
 
             # Wrap each agent as a graph node operating on a dict carrier.
-            def make_node(agent):  # type: ignore[no-untyped-def]
-                async def _node(carrier: dict) -> dict:
+            def make_node(agent: BaseAgent) -> Any:
+                async def _node(carrier: dict[str, Any]) -> dict[str, Any]:
                     st: HuntState = carrier["state"]
                     carrier["state"] = await agent.run(st)
                     return carrier
@@ -86,7 +90,7 @@ class HuntEngine:
 
             compiled = graph.compile()
             result = await compiled.ainvoke({"state": state})
-            return result["state"]
+            return result["state"]  # type: ignore[no-any-return]
         except Exception as exc:  # noqa: BLE001 - fall back if graph wiring fails
             logger.warning("langgraph_failed_fallback_sequential", error=str(exc))
             return await self._run_sequential(state)

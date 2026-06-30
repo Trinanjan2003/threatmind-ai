@@ -15,7 +15,7 @@ class EvidenceSchema(BaseModel):
     summary: str
     event_id: str | None = None
     source: str | None = None
-    fields: dict = Field(default_factory=dict)
+    fields: dict[str, object] = Field(default_factory=dict)
 
 
 class TechniqueSchema(BaseModel):

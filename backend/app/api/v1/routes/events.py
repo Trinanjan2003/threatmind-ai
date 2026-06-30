@@ -29,7 +29,7 @@ async def search_events(
     time_to: datetime | None = None,
     page: int = Query(1, ge=1),
     page_size: int = Query(50, ge=1, le=200),
-) -> Page[dict]:
+) -> Page[dict[str, object]]:
     items, total = await container.search.search_events(
         query=q,
         host=host,
@@ -48,7 +48,7 @@ async def search_events(
     summary="Get a single normalized event",
     dependencies=[Depends(require_permissions(Permission.ALERTS_READ))],
 )
-async def get_event(event_id: str) -> dict:
+async def get_event(event_id: str) -> dict[str, object]:
     event = await container.search.get_event(event_id)
     if event is None:
         raise NotFoundError(f"Event {event_id} not found")

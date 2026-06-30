@@ -24,15 +24,15 @@ _pwd_context = CryptContext(schemes=["argon2", "bcrypt"], deprecated="auto")
 
 # ─────────────────────────── Passwords ───────────────────────────
 def hash_password(password: str) -> str:
-    return _pwd_context.hash(password)
+    return str(_pwd_context.hash(password))
 
 
 def verify_password(plain: str, hashed: str) -> bool:
-    return _pwd_context.verify(plain, hashed)
+    return bool(_pwd_context.verify(plain, hashed))
 
 
 def needs_rehash(hashed: str) -> bool:
-    return _pwd_context.needs_update(hashed)
+    return bool(_pwd_context.needs_update(hashed))
 
 
 # ─────────────────────────── JWT ───────────────────────────
